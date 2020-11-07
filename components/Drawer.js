@@ -19,11 +19,11 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : materialTheme.COLORS.MUTED}
           />
         );
-      case "Woman":
+      case "Palletk":
         return (
           <Icon
             size={16}
-            name="md-woman"
+            name="md-home"
             family="ionicon"
             color={focused ? "white" : materialTheme.COLORS.MUTED}
           />

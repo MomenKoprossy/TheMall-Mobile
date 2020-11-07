@@ -239,7 +239,7 @@ function WomanStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
-        name="Woman"
+        name="Palletk"
         component={WomanScreen}
         options={{
           header: ({ navigation, scene }) => (
@@ -340,7 +340,7 @@ function WomanStack(props) {
           headerTransparent: true,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Chat"
         component={ChatScreen}
         options={{
@@ -353,7 +353,7 @@ function WomanStack(props) {
             />
           ),
         }}
-      />
+      /> */}
       <Stack.Screen
         name="Cart"
         component={CartScreen}
@@ -912,7 +912,7 @@ function HomeStack(props) {
           headerTransparent: true,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Chat"
         component={ChatScreen}
         options={{
@@ -925,7 +925,7 @@ function HomeStack(props) {
             />
           ),
         }}
-      />
+      /> */}
       <Stack.Screen
         name="Cart"
         component={CartScreen}
@@ -985,7 +985,7 @@ function AppStack(props) {
       }}
       initialRouteName="Home"
     >
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Home"
         component={HomeStack}
         options={{
@@ -998,15 +998,15 @@ function AppStack(props) {
             />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen
-        name="Woman"
+        name="Palletk"
         component={WomanStack}
         options={{
           drawerIcon: ({ focused }) => (
             <Icon
               size={16}
-              name="md-woman"
+              name="md-home"
               family="ionicon"
               color={focused ? "white" : materialTheme.COLORS.MUTED}
               style={{ marginLeft: 4, marginRight: 4 }}

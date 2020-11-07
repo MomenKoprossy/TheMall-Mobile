@@ -1,10 +1,10 @@
 export default [
   {
-    title: 'Dirty Deeds Done Dirty Cheap',
+    title: 'D4C',
     // image: 'https://source.unsplash.com/mEZ3PoFGs_k/840x840',
     image: 'https://vignette.wikia.nocookie.net/jjba/images/4/4d/D4c_sbr69.png/revision/latest?cb=20160323142852',
-    price: 180,
-    horizontal: true,
+    price: 182,
+    
   },
   {
     title: 'Burger',

@@ -6,12 +6,13 @@ import { Block, Button, Input, Text, theme } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 import { materialTheme } from '../constants/';
 import { HeaderHeight } from "../constants/utils";
+import * as firebase from 'firebase';
+
 
 const { height, width } = Dimensions.get('window');
 
 export default class SignUp extends React.Component {
   state = {
-    user: '-',
     email: '-',
     password: '-',
     active: {
@@ -20,6 +21,17 @@ export default class SignUp extends React.Component {
       password: false,
     }
   }
+
+   registeruser(){
+    var useremail = this.state.email
+    var userpass = this.state.password
+    firebase.auth().createUserWithEmailAndPassword(useremail, userpass).then(()=>{this.props.navigation.navigate('Woman')}
+    ).catch((error) =>{
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(`${errorCode}: ${errorMessage}`);
+    })
+}
 
   handleChange = (name, value) => {
     this.setState({ [name]: value });
@@ -43,70 +55,10 @@ export default class SignUp extends React.Component {
         style={[styles.signup, { flex: 1, paddingTop: theme.SIZES.BASE * 4 }]}>
         <Block flex middle>
           <KeyboardAvoidingView behavior="padding" enabled>
-            <Block style={{ marginBottom: height * 0.05 }}>
-              <Block row center space="between" style={{ marginVertical: theme.SIZES.BASE * 1.875 }}>
-                <Block flex middle right>
-                  <Button
-                    round
-                    onlyIcon
-                    iconSize={theme.SIZES.BASE * 1.625}
-                    icon="facebook"
-                    iconFamily="font-awesome"
-                    onPress={() => Alert.alert('Not implemented')}
-                    color={theme.COLORS.FACEBOOK}
-                    shadowless
-                    iconColor={theme.COLORS.WHITE}
-                    style={styles.social}
-                  />
-                </Block>
-                <Block flex middle center>
-                  <Button
-                    round
-                    onlyIcon
-                    iconSize={theme.SIZES.BASE * 1.625}
-                    icon="twitter"
-                    iconFamily="font-awesome"
-                    onPress={() => Alert.alert('Not implemented')}
-                    color={theme.COLORS.TWITTER}
-                    shadowless
-                    iconColor={theme.COLORS.WHITE}
-                    style={styles.social}
-                  />
-                </Block>
-                <Block flex middle left>
-                  <Button
-                    round
-                    onlyIcon
-                    iconSize={theme.SIZES.BASE * 1.625}
-                    icon="dribbble"
-                    iconFamily="font-awesome"
-                    onPress={() => Alert.alert('Not implemented')}
-                    color={theme.COLORS.DRIBBBLE}
-                    shadowless
-                    iconColor={theme.COLORS.WHITE}
-                    style={styles.social}
-                  />
-                </Block>
-              </Block>
-              <Text color='#fff' center size={theme.SIZES.FONT * 0.875}>
-                or be classical
-              </Text>
-            </Block>
+  
 
-            <Block flex={1} center space="between">
+            <Block flex={1} marginTop='50%' center space="between">
               <Block center>
-                <Input
-                  bgColor='transparent'
-                  placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
-                  borderless
-                  color="white"
-                  placeholder="Username"
-                  autoCapitalize="none"
-                  style={[styles.input, this.state.active.user ? styles.inputActive : null]}
-                  onChangeText={text => this.handleChange('user', text)}
-                  onBlur={() => this.toggleActive('user')}
-                  onFocus={() => this.toggleActive('user')}
-                />
                 <Input
                   bgColor='transparent'
                   placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
@@ -140,6 +92,7 @@ export default class SignUp extends React.Component {
                   shadowless
                   style={{ height: 48 }}
                   color={materialTheme.COLORS.BUTTON_COLOR}
+                  onPress={()=>{this.registeruser()}}
                 >
                   SIGN UP
                 </Button>

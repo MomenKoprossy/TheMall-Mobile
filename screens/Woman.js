@@ -1,16 +1,48 @@
-import React from 'react';
-import { StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { Button, Block, Text, Input, theme } from 'galio-framework';
+import React from "react";
+import {
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
+import { Button, Block, Text, Input, theme } from "galio-framework";
 
-import { Icon, Product } from '../components/';
+import { Icon, Product } from "../components/";
 
-const { width } = Dimensions.get('screen');
-import womanImages from '../constants/images/woman';
+const { width } = Dimensions.get("screen");
+import * as firebase from "firebase";
 
 export default class Woman extends React.Component {
+  state = {
+    loading: true,
+    items: [],
+  };
+
+  componentDidMount() {
+    this.apiCall();
+  }
+
+  apiCall = () => {
+    firebase
+      .database()
+      .ref("items")
+      .once("value")
+      .then((items) => {
+        console.log(items.val());
+        this.setState({ items: items.val(), loading: false });
+      });
+  };
+
   renderSearch = () => {
     const { navigation } = this.props;
-    const iconContent = <Icon size={16} color={theme.COLORS.MUTED} name="zoom-in" family="material" />
+    const iconContent = (
+      <Icon
+        size={16}
+        color={theme.COLORS.MUTED}
+        name="zoom-in"
+        family="material"
+      />
+    );
 
     return (
       <Input
@@ -19,49 +51,74 @@ export default class Woman extends React.Component {
         style={styles.search}
         iconContent={iconContent}
         placeholder="What are you looking for?"
-        onFocus={() => navigation.navigate('Search')}
+        onFocus={() => navigation.navigate("Search")}
       />
-    )
-  }
-  
+    );
+  };
+
   renderTabs = () => {
     const { navigation } = this.props;
 
     return (
       <Block row style={styles.tabs}>
-        <Button shadowless style={[styles.tab, styles.divider]} onPress={() => navigation.navigate('Categories')}>
+        <Button
+          shadowless
+          style={[styles.tab, styles.divider]}
+          onPress={() => navigation.navigate("Categories")}
+        >
           <Block row middle>
             <Icon name="grid" family="feather" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Categories</Text>
+            <Text size={16} style={styles.tabTitle}>
+              Categories
+            </Text>
           </Block>
         </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Deals')}>
+        <Button
+          shadowless
+          style={styles.tab}
+          onPress={() => navigation.navigate("Deals")}
+        >
           <Block row middle>
-            <Icon size={16} name="camera-18" family="GalioExtra" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Best Deals</Text>
+            <Icon
+              size={16}
+              name="camera-18"
+              family="GalioExtra"
+              style={{ paddingRight: 8 }}
+            />
+            <Text size={16} style={styles.tabTitle}>
+              Best Deals
+            </Text>
           </Block>
         </Button>
       </Block>
-    )
-  }
+    );
+  };
 
   renderProducts = () => {
     return (
       <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.loading}
+            onRefresh={() => this.apiCall()}
+          />
+        }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.products}>
+        contentContainerStyle={styles.products}
+      >
         <Block flex>
-          <Product product={womanImages[0]} horizontal />
-          <Product product={womanImages[1]} horizontal />
+          {this.state.items.map((item, index) => (
+            <Product key={index} product={item} horizontal />
+          ))}
         </Block>
       </ScrollView>
-    )
-  }
+    );
+  };
 
   render() {
     return (
       <Block flex center style={styles.home}>
-        {this.renderProducts()}
+        {this.state.loading ? <Block></Block> : this.renderProducts()}
       </Block>
     );
   }
@@ -69,7 +126,7 @@ export default class Woman extends React.Component {
 
 const styles = StyleSheet.create({
   home: {
-    width: width,    
+    width: width,
   },
   search: {
     height: 48,
@@ -83,7 +140,7 @@ const styles = StyleSheet.create({
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowRadius: 8,
     shadowOpacity: 0.2,
@@ -97,7 +154,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     backgroundColor: theme.COLORS.TRANSPARENT,
-    width: width * 0.50,
+    width: width * 0.5,
     borderRadius: 0,
     borderWidth: 0,
     height: 24,
@@ -105,7 +162,7 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     lineHeight: 19,
-    fontWeight: '300'
+    fontWeight: "300",
   },
   divider: {
     borderRightWidth: 0.3,

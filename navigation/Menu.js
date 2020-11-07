@@ -6,7 +6,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  ListView
+  ListView,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import { useSafeArea } from "react-native-safe-area-context";
@@ -21,7 +21,7 @@ const profile = {
   name: "Rachel Brown",
   type: "Seller",
   plan: "Pro",
-  rating: 4.8
+  rating: 4.8,
 };
 
 function CustomDrawerContent({
@@ -34,14 +34,8 @@ function CustomDrawerContent({
 }) {
   const insets = useSafeArea();
   const screens = [
-    "Home",
-    "Woman",
-    "Man",
-    "Kids",
-    "New Collection",
-    "Profile",
-    "Settings",
-    "Components"
+    "Palletk",
+    
   ];
   return (
     <Block
@@ -49,7 +43,13 @@ function CustomDrawerContent({
       forceInset={{ top: "always", horizontal: "never" }}
     >
       <Block flex={0.23} style={styles.header}>
-        <TouchableWithoutFeedback
+        <Block style={styles.profile}>
+          <Image
+            source={{ uri: "https://palletk.com/assets/img/Palletk1.PNG" }}
+            style={styles.avatar}
+          />
+        </Block>
+        {/* <TouchableWithoutFeedback
           onPress={() => navigation.navigate("Profile")}
         >
           <Block style={styles.profile}>
@@ -59,7 +59,7 @@ function CustomDrawerContent({
             </Text>
           </Block>
         </TouchableWithoutFeedback>
-        {/* <Block row>
+        <Block row>
           <Block middle style={styles.pro}>
             <Text size={16} color="white">
               {profile.plan}
@@ -80,8 +80,8 @@ function CustomDrawerContent({
             {
               paddingTop: insets.top * 0.4,
               paddingLeft: drawerPosition === "left" ? insets.left : 0,
-              paddingRight: drawerPosition === "right" ? insets.right : 0
-            }
+              paddingRight: drawerPosition === "right" ? insets.right : 0,
+            },
           ]}
           showsVerticalScrollIndicator={false}
         >
@@ -115,27 +115,27 @@ function CustomDrawerContent({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   header: {
-    backgroundColor: "#4B1958",
-    paddingHorizontal: 28,
+    backgroundColor: "white",
+    paddingHorizontal: 10,
     paddingBottom: theme.SIZES.BASE,
     paddingTop: theme.SIZES.BASE * 2,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   footer: {
     paddingHorizontal: 28,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   profile: {
-    marginBottom: theme.SIZES.BASE / 2
+    marginBottom: theme.SIZES.BASE / 2,
   },
   avatar: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    marginBottom: theme.SIZES.BASE
+    height: 60,
+    width: 310,
+    //borderRadius: 40,
+    marginBottom: theme.SIZES.BASE,
   },
   pro: {
     backgroundColor: materialTheme.COLORS.LABEL,
@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 4,
     height: 19,
-    width: 38
+    width: 38,
   },
   seller: {
-    marginRight: 16
+    marginRight: 16,
   },
 });
 
