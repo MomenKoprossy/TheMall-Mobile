@@ -31,7 +31,7 @@ export default class SignIn extends React.Component {
     var userpass = this.state.password;
     firebase
       .auth()
-      .signInWithEmailAndPassword(useremail, userpass).then(()=>{this.props.navigation.navigate('Woman')})
+      .signInWithEmailAndPassword(useremail, userpass).then(()=>{this.props.navigation.navigate('Palletk')})
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
