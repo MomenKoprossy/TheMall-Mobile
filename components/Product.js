@@ -26,7 +26,6 @@ class Product extends React.Component {
       full ? styles.fullImage : styles.horizontalImage,
       imageStyle,
     ];
-
     return (
       <Block
         row={horizontal}

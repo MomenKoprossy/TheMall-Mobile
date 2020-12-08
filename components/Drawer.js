@@ -4,6 +4,7 @@ import { Block, Text, theme } from "galio-framework";
 
 import Icon from "./Icon";
 import materialTheme from "../constants/Theme";
+import * as firebase from "firebase";
 
 class DrawerItem extends React.Component {
   renderIcon = () => {
@@ -100,23 +101,48 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : materialTheme.COLORS.MUTED}
           />
         );
+        case "Log Out":
+        return (
+          <Icon
+            size={15}
+            name="ios-log-out"
+            family="ionicon"
+            color={focused ? "white" : materialTheme.COLORS.MUTED}
+          />
+        );
       default:
         return null;
     }
   };
+
+  logoutHandle = () => {
+    const { title, navigation } = this.props;
+    if (title == "Log Out") {
+      firebase
+        .auth()
+        .signOut()
+        .then(navigation.navigate("Sign In"))
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          errors += `${errorCode}: ${errorMessage}`;
+        });
+    } else navigation.navigate(title);
+  };
+
   render() {
-    const { title, focused, navigation } = this.props;
+    const { title, focused } = this.props;
     return (
       <TouchableOpacity
         style={{ height: 55 }}
-        onPress={() => navigation.navigate(title)}
+        onPress={() => this.logoutHandle()}
       >
         <Block
           flex
           row
           style={[
             styles.defaultStyle,
-            focused ? [styles.activeStyle, styles.shadow] : null
+            focused ? [styles.activeStyle, styles.shadow] : null,
           ]}
         >
           <Block middle flex={0.1} style={{ marginRight: 28 }}>
@@ -139,19 +165,19 @@ const styles = StyleSheet.create({
   defaultStyle: {
     paddingVertical: 16,
     paddingHorizontal: 16,
-    marginBottom: 6
+    marginBottom: 6,
   },
   activeStyle: {
     backgroundColor: materialTheme.COLORS.ACTIVE,
-    borderRadius: 4
+    borderRadius: 4,
   },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowRadius: 8,
-    shadowOpacity: 0.2
-  }
+    shadowOpacity: 0.2,
+  },
 });

@@ -33,10 +33,7 @@ function CustomDrawerContent({
   ...rest
 }) {
   const insets = useSafeArea();
-  const screens = [
-    "Palletk",
-    
-  ];
+  const screens = ["Palletk"];
   return (
     <Block
       style={styles.container}
@@ -97,7 +94,7 @@ function CustomDrawerContent({
           })}
         </ScrollView>
       </Block>
-      <Block flex={0.25} style={{ paddingLeft: 7, paddingRight: 14 }}>
+      <Block flex={0.45} style={{ paddingLeft: 7, paddingRight: 14 }}>
         <DrawerCustomItem
           title="Sign In"
           navigation={navigation}
@@ -107,6 +104,11 @@ function CustomDrawerContent({
           title="Sign Up"
           navigation={navigation}
           focused={state.index === 9 ? true : false}
+        />
+        <DrawerCustomItem
+          title="Log Out"
+          navigation={navigation}
+          focused={state.index === 10 ? true : false}
         />
       </Block>
     </Block>

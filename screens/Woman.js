@@ -4,6 +4,7 @@ import {
   Dimensions,
   ScrollView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { Button, Block, Text, Input, theme } from "galio-framework";
 
@@ -22,15 +23,24 @@ export default class Woman extends React.Component {
     this.apiCall();
   }
 
-  apiCall = () => {
-    firebase
-      .database()
-      .ref("items")
-      .once("value")
-      .then((items) => {
-        console.log(items.val());
-        this.setState({ items: items.val(), loading: false });
+  apiCall = async () => {
+    var i = [];
+    await firebase
+      .firestore()
+      .collection("stores/aNDEbzt4SUuy8MTNUYbb/items")
+      .get()
+      .then((res) => {
+        res.forEach((doc) => {
+          i.push(doc.data());
+        });
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        errors += `${errorCode}: ${errorMessage}`;
       });
+
+    this.setState({ items: i, loading: false });
   };
 
   renderSearch = () => {
@@ -118,7 +128,7 @@ export default class Woman extends React.Component {
   render() {
     return (
       <Block flex center style={styles.home}>
-        {this.state.loading ? <Block></Block> : this.renderProducts()}
+        {this.state.loading ? <ActivityIndicator color='blue' /> : this.renderProducts()}
       </Block>
     );
   }
@@ -127,6 +137,8 @@ export default class Woman extends React.Component {
 const styles = StyleSheet.create({
   home: {
     width: width,
+    flex: 1,
+    justifyContent: "center",
   },
   search: {
     height: 48,
