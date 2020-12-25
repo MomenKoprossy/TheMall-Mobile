@@ -55,10 +55,11 @@ export default class SignUp extends React.Component {
         var errorCode = error.code;
         var errorMessage = error.message;
         errors += `${errorCode}: ${errorMessage}`;
+      })
+      .then(() => {
+        if (errors != "") alert(errors);
+        else alert("User Created Successfully!");
       });
-
-    if (errors != "") alert(errors);
-    else alert("User Created Successfully!");
   }
 
   handleChange = (name, value) => {
