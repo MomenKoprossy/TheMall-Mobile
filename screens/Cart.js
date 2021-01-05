@@ -1,34 +1,40 @@
-import React from 'react';
-import { StyleSheet, Dimensions, Image, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { Button, Block, Text, theme } from 'galio-framework';
+import React from "react";
+import {
+  StyleSheet,
+  Dimensions,
+  Image,
+  FlatList,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { Button, Block, Text, theme } from "galio-framework";
 
-import { Product, Select } from '../components/';
-import { materialTheme, products } from '../constants/';
-import cartItems from '../constants/images/cart';
+import { Product, Select } from "../components/";
+import { materialTheme, products } from "../constants/";
+import cartItems from "../constants/images/cart";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 
 export default class Cart extends React.Component {
   state = {
     cart: cartItems.products,
-  }
+  };
 
   handleQuantity = (id, qty) => {
     const { cart } = this.state;
 
-    const updatedCart = cart.map(product => {
+    const updatedCart = cart.map((product) => {
       if (product.id === id) product.qty = qty;
       return product;
     });
 
     this.setState({ cart: updatedCart });
-  }
+  };
 
   handleDelete = (id) => {
     const { cart } = this.state;
-    const updatedCart = cart.filter(product => (product.id !== id));
+    const updatedCart = cart.filter((product) => product.id !== id);
     this.setState({ cart: updatedCart });
-  }
+  };
 
   handleAdd = (item) => {
     const { cart } = this.state;
@@ -38,10 +44,10 @@ export default class Cart extends React.Component {
       id: cart.length + 1,
       stock: true,
       qty: 1,
-    })
+    });
 
     this.setState({ cart });
-  }
+  };
 
   renderProduct = ({ item }) => {
     const { navigation } = this.props;
@@ -50,30 +56,46 @@ export default class Cart extends React.Component {
       <Block>
         <Block card shadow style={styles.product}>
           <Block flex row>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('Product', { product: item })}>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("Product", { product: item })}
+            >
               <Block style={styles.imageHorizontal}>
                 <Image
                   source={{ uri: item.image }}
-                  style={{ height: theme.SIZES.BASE * 5, marginTop: -theme.SIZES.BASE * 2, borderRadius: 3 }}
+                  style={{
+                    height: theme.SIZES.BASE * 5,
+                    marginTop: -theme.SIZES.BASE * 2,
+                    borderRadius: 3,
+                  }}
                 />
               </Block>
             </TouchableWithoutFeedback>
             <Block flex style={styles.productDescription}>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('Product', { product: item })}>
-                <Text size={14} style={styles.productTitle}>{item.title}</Text>
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  navigation.navigate("Product", { product: item })
+                }
+              >
+                <Text size={14} style={styles.productTitle}>
+                  {item.title}
+                </Text>
               </TouchableWithoutFeedback>
               <Block flex row space="between">
                 <Block bottom>
                   <Text
                     size={theme.SIZES.BASE * 0.75}
-                    color={materialTheme.COLORS[item.stock ? 'SUCCESS' : 'ERROR']}>
-                    {item.stock ? 'In Stock' : 'Out of Stock'}
+                    color={
+                      materialTheme.COLORS[item.stock ? "SUCCESS" : "ERROR"]
+                    }
+                  >
+                    {item.stock ? "In Stock" : "Out of Stock"}
                   </Text>
                 </Block>
                 <Block bottom>
                   <Text
                     size={theme.SIZES.BASE * 0.75}
-                    color={materialTheme.COLORS.ACTIVE}>
+                    color={materialTheme.COLORS.ACTIVE}
+                  >
                     $ {item.price * item.qty}
                   </Text>
                 </Block>
@@ -99,7 +121,7 @@ export default class Cart extends React.Component {
             >
               DELETE
             </Button>
-            <Button
+            {/* <Button
               center
               shadowless
               color={materialTheme.COLORS.INPUT}
@@ -108,12 +130,12 @@ export default class Cart extends React.Component {
               onPress={() => console.log('save for later')}
             >
               SAVE FOR LATER
-            </Button>
+            </Button> */}
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderHorizontalProduct = ({ item }) => {
     return (
@@ -121,7 +143,7 @@ export default class Cart extends React.Component {
         <Product
           product={item}
           priceColor={materialTheme.COLORS.ACTIVE}
-          imageStyle={{ width: 'auto', height: 94 }}
+          imageStyle={{ width: "auto", height: 94 }}
           style={{ width: width / 2.88 }}
         />
         <Button
@@ -129,14 +151,14 @@ export default class Cart extends React.Component {
           shadowless
           color={materialTheme.COLORS.ACTIVE}
           style={styles.optionsButton}
-          textStyle={[styles.optionsButtonText, { color: 'white' }]}
+          textStyle={[styles.optionsButtonText, { color: "white" }]}
           onPress={() => this.handleAdd(item)}
         >
           ADD TO CART
         </Button>
       </Block>
-    )
-  }
+    );
+  };
 
   renderHorizontalProducts = () => {
     return (
@@ -152,64 +174,72 @@ export default class Cart extends React.Component {
           renderItem={this.renderHorizontalProduct}
         />
       </Block>
-    )
-  }
+    );
+  };
 
   renderDivider() {
-    return (
-      <Block style={styles.divider} />
-    )
+    return <Block style={styles.divider} />;
   }
 
   renderHeader = () => {
     const { navigation } = this.props;
     const { cart } = this.state;
     const productsQty = cart.length;
-    const total = cart && cart.reduce((prev, product) => prev + (product.price * product.qty), 0);
+    const total =
+      cart &&
+      cart.reduce((prev, product) => prev + product.price * product.qty, 0);
 
     return (
       <Block flex style={styles.header}>
         <Block style={{ marginBottom: theme.SIZES.BASE * 2 }}>
           <Text>
-            Cart subtotal ({productsQty} items):
-            <Text color={materialTheme.COLORS.ERROR} bold>${total}</Text>
+            Cart subtotal ({productsQty} items 14% VAT Included):{' '}
+            <Text color={materialTheme.COLORS.ERROR} bold>
+              ${total}
+            </Text>
           </Text>
         </Block>
         <Block center>
-          <Button flex center style={styles.checkout}
+          <Button
+            flex
+            center
+            style={styles.checkout}
             color={materialTheme.COLORS.ACTIVE}
-            onPress={() => navigation.navigate('Sign In')} >
+            onPress={() => navigation.navigate("Sign In")}
+          >
             PROCEED TO CHECKOUT
           </Button>
         </Block>
         <Block style={styles.divider} />
       </Block>
-    )
-  }
+    );
+  };
 
   renderFooter = () => {
     const { navigation } = this.props;
     return (
       <Block flex style={styles.footer}>
-        {this.renderHorizontalProducts()}
+        {/* {this.renderHorizontalProducts()} */}
         <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
           <Block style={styles.divider} />
         </Block>
         <Block center style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Button flex center style={styles.checkout}
+          <Button
+            flex
+            center
+            style={styles.checkout}
             color={materialTheme.COLORS.ACTIVE}
-            onPress={() => navigation.navigate('SignIn')} >
+            onPress={() => navigation.navigate("SignIn")}
+          >
             PROCEED TO CHECKOUT
           </Button>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderEmpty() {
-    return (
-      <Text color={materialTheme.COLORS.ERROR}>The cart is empty</Text>
-    );
+    return <Text color={materialTheme.COLORS.ERROR}>The cart is empty</Text>;
   }
 
   renderCheckoutButton() {
@@ -221,11 +251,12 @@ export default class Cart extends React.Component {
           center
           style={styles.checkout}
           color={materialTheme.COLORS.ACTIVE}
-          onPress={() => navigation.navigate('SignIn')} >
+          onPress={() => navigation.navigate("SignIn")}
+        >
           PROCEED TO CHECKOUT
-          </Button>
+        </Button>
       </Block>
-    )
+    );
   }
 
   render() {
@@ -237,8 +268,9 @@ export default class Cart extends React.Component {
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => `${index}-${item.title}`}
           ListEmptyComponent={this.renderEmpty()}
-          ListHeaderComponent={this.renderHeader()}
-          ListFooterComponent={this.renderFooter()} />
+          ListFooterComponent={this.renderHeader()}
+          //ListFooterComponent={this.renderFooter()}
+        />
       </Block>
     );
   }
@@ -269,22 +301,23 @@ const styles = StyleSheet.create({
     borderTopColor: materialTheme.COLORS.INPUT,
   },
   products: {
-    minHeight: '100%',
+    minHeight: "100%",
   },
   product: {
     width: width * 0.9,
     borderWidth: 0,
-    marginVertical: theme.SIZES.BASE * 1.5,
+    //marginVertical: theme.SIZES.BASE * 1.5,
     marginHorizontal: theme.SIZES.BASE,
     backgroundColor: theme.COLORS.WHITE,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: theme.SIZES.BASE / 4,
-    shadowOpacity: 0.1
+    shadowOpacity: 0.1,
+    marginTop: 50,
   },
   productTitle: {
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     paddingBottom: 6,
   },
   productDescription: {
@@ -298,9 +331,9 @@ const styles = StyleSheet.create({
     padding: theme.SIZES.BASE / 2,
   },
   qty: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     width: theme.SIZES.BASE * 6.25,
     backgroundColor: materialTheme.COLORS.INPUT,
     paddingHorizontal: theme.SIZES.BASE,
@@ -313,13 +346,13 @@ const styles = StyleSheet.create({
   },
   optionsButtonText: {
     fontSize: theme.SIZES.BASE * 0.75,
-    color: '#4a4a4a',
+    color: "#4a4a4a",
     fontWeight: "normal",
     fontStyle: "normal",
     letterSpacing: -0.29,
   },
   optionsButton: {
-    width: 'auto',
+    width: "auto",
     height: 34,
     paddingHorizontal: theme.SIZES.BASE,
     paddingVertical: 10,
@@ -344,7 +377,7 @@ const styles = StyleSheet.create({
   productVertical: {
     height: theme.SIZES.BASE * 10.75,
     width: theme.SIZES.BASE * 8.125,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 0,
     borderRadius: 4,
     marginBottom: theme.SIZES.BASE,
@@ -352,9 +385,9 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.1)",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowRadius: theme.SIZES.BASE / 4,
-    shadowOpacity: 1
-  }
+    shadowOpacity: 1,
+  },
 });
