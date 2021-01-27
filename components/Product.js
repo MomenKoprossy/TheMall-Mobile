@@ -7,9 +7,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
+import { inject, observer } from "mobx-react";
 
 const { width } = Dimensions.get("screen");
-
+@inject('Store')
+@observer
 class Product extends React.Component {
   render() {
     const {

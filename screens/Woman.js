@@ -7,41 +7,17 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Button, Block, Text, Input, theme } from "galio-framework";
-
+import { inject, observer } from "mobx-react";
 import { Icon, Product } from "../components/";
 
 const { width } = Dimensions.get("screen");
-import * as firebase from "firebase";
 
+@inject("Store")
+@observer
 export default class Woman extends React.Component {
-  state = {
-    loading: true,
-    items: [],
-  };
-
   componentDidMount() {
-    this.apiCall();
+    this.props.Store.getItems();
   }
-
-  apiCall = async () => {
-    var i = [];
-    await firebase
-      .firestore()
-      .collection("stores/aNDEbzt4SUuy8MTNUYbb/items")
-      .get()
-      .then((res) => {
-        res.forEach((doc) => {
-          i.push(doc.data());
-        });
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        errors += `${errorCode}: ${errorMessage}`;
-      });
-
-    this.setState({ items: i, loading: false });
-  };
 
   renderSearch = () => {
     const { navigation } = this.props;
@@ -109,15 +85,15 @@ export default class Woman extends React.Component {
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={this.state.loading}
-            onRefresh={() => this.apiCall()}
+            refreshing={this.props.Store.loading}
+            onRefresh={() => this.props.Store.getItems()}
           />
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.products}
       >
         <Block flex>
-          {this.state.items.map((item, index) => (
+          {this.props.Store.items.map((item, index) => (
             <Product key={index} product={item} horizontal />
           ))}
         </Block>
@@ -128,7 +104,11 @@ export default class Woman extends React.Component {
   render() {
     return (
       <Block flex center style={styles.home}>
-        {this.state.loading ? <ActivityIndicator color='blue' /> : this.renderProducts()}
+        {this.props.Store.loading ? (
+          <ActivityIndicator color="blue" />
+        ) : (
+          this.renderProducts()
+        )}
       </Block>
     );
   }
