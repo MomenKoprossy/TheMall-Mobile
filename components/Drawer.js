@@ -101,7 +101,7 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : materialTheme.COLORS.MUTED}
           />
         );
-        case "Log Out":
+      case "Log Out":
         return (
           <Icon
             size={15}
@@ -121,7 +121,10 @@ class DrawerItem extends React.Component {
       firebase
         .auth()
         .signOut()
-        .then(navigation.navigate("Sign In"))
+        .then(() => {
+          // navigation.navigate("Sign In");
+          navigation.popToTop();
+        })
         .catch((error) => {
           var errorCode = error.code;
           var errorMessage = error.message;

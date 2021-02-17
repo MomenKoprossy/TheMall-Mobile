@@ -43,7 +43,8 @@ export default class Product extends React.Component {
         {productImages.map((image, index) => (
           <TouchableWithoutFeedback
             key={`product-image-${index}`}
-            onPress={() => navigation.navigate('Gallery', { images: productImages, index })}>
+            //onPress={() => navigation.navigate('Gallery', { images: productImages, index })}
+            >
             <Image
               resizeMode="cover"
               source={{ uri: image }}
@@ -142,7 +143,7 @@ export default class Product extends React.Component {
                       <Text size={14} muted>Pro Seller</Text>
                     </Block>
                   </Block> */}
-                  <Text size={18} bold>Price: $735</Text>
+                  <Text size={18} bold>{route.params?.product.price}</Text>
                 </Block>
               </Block>
               <Block style={{ padding: theme.SIZES.BASE }}>
